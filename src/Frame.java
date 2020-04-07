@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class Frame {
     private String content;
@@ -9,15 +6,8 @@ public class Frame {
     private boolean pinned;
     private int blockId;
 
-    public String getRecord(int recId){
-        String record = "";
-        if(recId>0&&recId<=100){
-            for (int
-                 i = (recId-1)*40; i < (recId-1)*40+40; i++){
-                record += content.charAt(i);
-            }
-        }
-        return record;
+    public String getRecord(String content, int recId){
+       return Execution.getRecord(content, recId);
     }
 
     public void updateRecord(int recId, String newRec){
@@ -74,8 +64,19 @@ public class Frame {
         this.blockId = blockId;
     }
 
-    public static void main(String[] args) throws IOException {
 
-
-    }
+//    public static void main(String[] args) throws IOException {
+//        BufferPool bufferPool = new BufferPool();
+//        try {
+//            String parentDir = System.getProperty("user.dir");
+//            String currentDir = parentDir+"/F"+1+".txt";
+////            BufferedWriter out = new BufferedWriter(new FileWriter(currentDir, true));
+////            out.write("Hello");
+////            out.close();
+//
+//            PrintStream stream=null;
+//            stream=new PrintStream(currentDir);//写入的文件path
+//            stream.print("Hello");//写入的字符串
+//        } catch (IOException e) {}
+//    }
 }
