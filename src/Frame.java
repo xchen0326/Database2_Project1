@@ -1,4 +1,8 @@
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Frame {
     private String content;
@@ -66,17 +70,8 @@ public class Frame {
 
 
 //    public static void main(String[] args) throws IOException {
-//        BufferPool bufferPool = new BufferPool();
-//        try {
-//            String parentDir = System.getProperty("user.dir");
-//            String currentDir = parentDir+"/F"+1+".txt";
-////            BufferedWriter out = new BufferedWriter(new FileWriter(currentDir, true));
-////            out.write("Hello");
-////            out.close();
-//
-//            PrintStream stream=null;
-//            stream=new PrintStream(currentDir);//写入的文件path
-//            stream.print("Hello");//写入的字符串
-//        } catch (IOException e) {}
+//        Integer [] a = {1,2,3};
+//        List<Integer> lst = Arrays.stream(a).collect(Collectors.toList());
+//        System.out.println(lst);
 //    }
 }

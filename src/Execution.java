@@ -63,9 +63,61 @@ public class Execution {
                         }
                     }
                     //case 4
-                    else System.out.println("The corresponding block "+k+" cannot be accessed from disk " +
+                    else System.out.println("The corresponding block "+fileId
+                            +" cannot be accessed from disk " +
                             "because the memory buffers are full");
                 }
+            }
+
+            if (command.substring(0, 3).equals("Set")){
+                int k = Integer.valueOf(command.substring(4, 5));
+                String setStr = command.substring(6);
+                int fileId = (k-1)/100+1;
+                int recId = k-(k-1)/100*100;
+                bufferPool.getBuffer(fileId).updateRecord(recId, setStr);
+            }
+
+            if (command.substring(0, 3).equals("Pin")){
+                int fileId = Integer.valueOf(command.substring(4));
+                //case 1
+                if (bufferPool.searchBlock(fileId)!=-1){
+                    bufferPool.getBuffer(fileId).setPinned(true);
+                }
+                //case 2
+                if (bufferPool.searchBlock(fileId)==-1){
+                    if (bufferPool.emptyFrame()!=-1) {
+                        int emptyId = bufferPool.emptyFrame();
+                        bufferPool.setContentIfNotIn(fileId, bufferPool.emptyFrame());
+                        bufferPool.getBuffer(emptyId).setPinned(true);
+                    }
+                    if (bufferPool.emptyFrame()==-1 && bufferPool.eligibleTakeOut()!=-1){
+                        if (bufferPool.getBuffer(bufferPool.eligibleTakeOut()).isDirty()==false){
+                            String overwriteStr = bufferPool.contentFromDisk(fileId);
+                            bufferPool.getBuffer(bufferPool.eligibleTakeOut()).setContent(overwriteStr);
+                            bufferPool.getBuffer(bufferPool.eligibleTakeOut()).setPinned(true);
+                        }
+                        else {
+                            try {
+                                String parentDir = System.getProperty("user.dir");
+                                String currentDir = parentDir+"/F"+fileId+".txt";
+                                PrintStream stream=null;
+                                stream=new PrintStream(currentDir);
+                                stream.print(bufferPool.getBuffer(bufferPool.eligibleTakeOut()).getContent());
+                            } catch (IOException e) {}
+                            String overwriteStr = bufferPool.contentFromDisk(fileId);
+                            bufferPool.getBuffer(bufferPool.eligibleTakeOut()).setContent(overwriteStr);
+                            bufferPool.getBuffer(bufferPool.eligibleTakeOut()).setPinned(true);
+                        }
+                    }
+                }
+            }
+
+            if (command.substring(0, 5).equals("Unpin")){
+                int fileId = Integer.valueOf(command.substring(5));
+                if (bufferPool.searchBlock(fileId)!=-1) {
+                    bufferPool.getBuffer(fileId).setPinned(false);
+                }
+                else System.out.println("The corresponding block "+ fileId + " cannot be unpinned because it is not in memory");
             }
         }
     }
