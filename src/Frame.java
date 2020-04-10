@@ -1,8 +1,3 @@
-import java.io.*;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Frame {
     private String content;
@@ -14,6 +9,11 @@ public class Frame {
        return Execution.getRecord(content, recId);
     }
 
+    /**
+     * update a specific record
+     * @param recId
+     * @param newRec
+     */
     public void updateRecord(int recId, String newRec){
        String temp = "";
        if(recId==1){
@@ -29,6 +29,9 @@ public class Frame {
        setDirty(true);
     }
 
+    /**
+     * Initialize the frame object
+     */
     public void initialize(){
         this.content="";
         this.dirty=false;
@@ -36,34 +39,66 @@ public class Frame {
         this.blockId=-1;
     }
 
+    /**
+     * gets the full content from a frame
+     * @return
+     */
     public String getContent() {
         return content;
     }
 
+    /**
+     * set the content to a new one
+     * @param content
+     */
     public void setContent(String content) {
         this.content = content;
     }
 
+    /**
+     * checks if the frame has already been changed
+     * @return
+     */
     public boolean isDirty() {
         return dirty;
     }
 
+    /**
+     * sets the dirty value
+     * @param dirty
+     */
     public void setDirty(boolean dirty) {
         this.dirty = dirty;
     }
 
+    /**
+     * checks if a frame allows update on it
+     * @return
+     */
     public boolean isPinned() {
         return pinned;
     }
 
+    /**
+     * sets pin to new value
+     * @param pinned
+     */
     public void setPinned(boolean pinned) {
         this.pinned = pinned;
     }
 
+    /**
+     * gets the block id
+     * @return
+     */
     public int getBlockId() {
         return blockId;
     }
 
+    /**
+     * sets the block id
+     * @param blockId
+     */
     public void setBlockId(int blockId) {
         this.blockId = blockId;
     }
